@@ -1,4 +1,3 @@
-
 基于链式事件触发策略，使用单个setTimeout处理过期时间队列
 
 ## Install
@@ -7,6 +6,7 @@
 npm install timechain
 ```
 
+## 示例
 
 ```js
 let timeChain = require('timechain')
