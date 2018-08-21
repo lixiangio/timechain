@@ -1,4 +1,12 @@
-基于事件触发，使用单个setTimeout处理时间队列
+
+基于链式事件触发策略，使用单个setTimeout处理过期时间队列
+
+## Install
+
+```
+npm install timechain
+```
+
 
 ```js
 let timeChain = require('timechain')
