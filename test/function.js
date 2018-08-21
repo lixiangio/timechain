@@ -6,4 +6,16 @@ timechain.set(function (value) {
 
    console.log(value)
    
-}, 888)
+}, 111)
+
+timechain.set(function (value) {
+
+   console.log(value)
+   
+}, 222)
+
+timechain.set(function (value) {
+
+   console.log(value)
+   
+}, 333)
