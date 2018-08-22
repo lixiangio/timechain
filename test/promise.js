@@ -1,21 +1,22 @@
+let test = require('ava')
 let timeChain = require('..')
+let { zPromise } = require('./helpers/')
 
 let timechain = new timeChain({ timeout: 3000 })
 
-let reject1
-new Promise(function(resolve, reject) {
-   reject1 = reject
-}).catch(function(error){
-   console.error(error)
-})
+test('Promise函数', async t => {
 
-let reject2
-new Promise(function(resolve, reject) {
-   reject2 = reject
-}).catch(function(error){
-   console.error(error)
-})
+   let p1 = new zPromise()
 
-timechain.set(reject1, 111)
+   timechain.set(p1.resolve, 111)
 
-timechain.set(reject2, 222)
+   t.deepEqual(111, await p1);
+
+   let p2 = new zPromise()
+
+   timechain.set(p2.resolve, 222)
+
+   t.deepEqual(222, await p2);
+
+});
+

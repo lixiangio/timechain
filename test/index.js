@@ -1,35 +1,33 @@
+let test = require('ava')
 let timeChain = require('..')
+let { sleep } = require('./helpers/')
 
 let timechain = new timeChain({ timeout: 3000 })
 
-timechain.set(111, { a: 111 })
+timechain.set(666, { a: 1 })
 
-setTimeout(() => {
+test('main', async t => {
 
-   console.log(1000, timechain.get(111))
+   await sleep(1000)
 
-}, 1000);
+   t.deepEqual({ a: 1 }, timechain.get(666));
 
-setTimeout(() => {
+   await sleep(1000)
 
-   console.log(2000, timechain.get(111))
+   t.deepEqual({ a: 1 }, timechain.get(666));
 
-}, 2000);
+   await sleep(1000)
 
-setTimeout(() => {
+   t.deepEqual(undefined, timechain.get(666));
 
-   console.log(3000, timechain.get(111))
+   await sleep(1000)
 
-}, 3000);
+   t.deepEqual(undefined, timechain.get(666));
 
-setTimeout(() => {
+   // setTimeout(() => {
 
-   console.log(5000, timechain.get(111))
+   //    console.log(2995, timechain.get(111))
 
-}, 5000);
-
-setTimeout(() => {
-
-   console.log(2995, timechain.get(111))
-
-}, 2995);
+   // }, 2995);
+   
+})
