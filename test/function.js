@@ -1,10 +1,11 @@
-let test = require('ava')
+let test = require('jtf')
 let timeChain = require('..')
-let { zPromise } = require('./helpers/')
-
-let timechain = new timeChain({ timeout: 3000 })
 
 test('执行函数', async t => {
+
+   let { zPromise } = require('./helpers/')
+
+   let timechain = new timeChain({ timeout: 3000 })
 
    let p1 = new zPromise()
    let p2 = new zPromise()
