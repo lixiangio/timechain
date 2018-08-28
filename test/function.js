@@ -1,11 +1,11 @@
 let test = require('jtf')
 let timeChain = require('..')
 
-test('执行函数', async t => {
+test('回调函数', async t => {
 
    let { zPromise } = require('./helpers/')
 
-   let timechain = new timeChain({ timeout: 3000 })
+   let timechain = new timeChain({ delay: 3000 })
 
    let p1 = new zPromise()
    let p2 = new zPromise()
@@ -31,4 +31,4 @@ test('执行函数', async t => {
 
    t.deepEqual({ a: 1 }, await p3);
 
-});
+})

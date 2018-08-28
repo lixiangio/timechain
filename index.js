@@ -3,13 +3,14 @@
 class timeChain {
    /**
     * 
-    * @param {Number} timeout 默认超时
+    * @param {Number} delay 默认超时
     */
    constructor(options = {}) {
 
-      let { timeout = 0 } = options
+      let { delay = 0 } = options
 
-      this.timeout = timeout
+      this.delay = delay
+      this.timeout = { _called: true }
       this.tasks = new Map()
 
    }
@@ -20,15 +21,18 @@ class timeChain {
     */
    set(key, value, timestamp) {
 
-      // 仅在定时队列为空时允许启动
-      if (this.tasks.size === 0) {
-
-         this.run(this.timeout)
-
+      // 仅在定时器called后激活
+      if (this.timeout._called === true) {
+         this.run(this.delay)
       }
 
+      // 仅在定时队列为空时激活
+      // if (this.tasks.size === 0) {
+      //    this.run(this.delay)
+      // }
+
       if (!timestamp) {
-         timestamp = Date.now() + this.timeout
+         timestamp = Date.now() + this.delay
       }
 
       return this.tasks.set(key, { value, timestamp })
@@ -58,20 +62,21 @@ class timeChain {
 
    }
    /**
-    * 递归循环触发时间队列,，直至队列为空
-    * @param {Number} timeout 等待时间，单位ms
+    * 递归循环触发时间队列，直至队列为空
+    * @param {Number} delay 等待时间，单位ms
     */
-   run(timeout) {
+   run(delay) {
 
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
 
+         let now = Date.now()
          let keys = this.tasks.keys()
 
          for (let key of keys) {
             let { value, timestamp } = this.tasks.get(key)
-            let timeout = timestamp - Date.now()
-            if (timeout > 0) {
-               this.run(timeout)
+            let delay = timestamp - now
+            if (delay > 0) {
+               this.run(delay)
                return
             } else {
                if (key instanceof Function) {
@@ -81,7 +86,7 @@ class timeChain {
             }
          }
 
-      }, timeout);
+      }, delay);
 
    }
 }

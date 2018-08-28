@@ -1,10 +1,10 @@
 let test = require('jtf')
 let timeChain = require('..')
-let { sleep } = require('./helpers/')
+let { sleep } = require('./helpers')
 
-test('main', async t => {
+test('超时删除', async t => {
 
-   let timechain = new timeChain({ timeout: 3000 })
+   let timechain = new timeChain({ delay: 3000 })
 
    timechain.set(666, { a: 1 })
 

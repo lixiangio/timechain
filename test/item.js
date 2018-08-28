@@ -2,9 +2,9 @@ let test = require('jtf')
 let timeChain = require('..')
 let { zPromise } = require('./helpers/')
 
-test('单项测试', async t => {
+test('单项时间设定', async t => {
 
-   let timechain = new timeChain({ timeout: 1000 })
+   let timechain = new timeChain({ delay: 1000 })
    
    let p1 = new zPromise()
 
@@ -14,4 +14,4 @@ test('单项测试', async t => {
 
    t.deepEqual(999, await p1);
 
-});
+})

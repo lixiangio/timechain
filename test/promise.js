@@ -4,7 +4,7 @@ let { zPromise } = require('./helpers/')
 
 test('Promise函数', async t => {
 
-   let timechain = new timeChain({ timeout: 3000 })
+   let timechain = new timeChain({ delay: 3000 })
    
    let p1 = new zPromise()
 
