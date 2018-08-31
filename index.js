@@ -18,24 +18,25 @@ class timeChain {
     * 设置key、value
     * @param {*} key 保存key，允许任意值
     * @param {*} value 保存value，允许任意值
+    * @param {Number} delay 等待延时，可选
     */
-   set(key, value, timestamp) {
+   set(key, value, delay) {
+
+      if (!delay) {
+         delay = this.delay
+      }
 
       // 仅在定时器called后激活
       if (this.timeout._called === true) {
-         this.run(this.delay)
+         this.run(delay)
       }
 
-      // 仅在定时队列为空时激活
+      // 仅在定时队列为空时激活，非node.js环境使用
       // if (this.tasks.size === 0) {
-      //    this.run(this.delay)
+      //    this.run(delay)
       // }
 
-      if (!timestamp) {
-         timestamp = Date.now() + this.delay
-      }
-
-      return this.tasks.set(key, { value, timestamp })
+      return this.tasks.set(key, { value, timestamp: Date.now() + delay })
 
    }
    /**

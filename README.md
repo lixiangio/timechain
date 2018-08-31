@@ -11,7 +11,7 @@ npm install timechain
 ```js
 let timeChain = require('timechain')
 
-let timechain = new timeChain({ timeout: 3000 })
+let timechain = new timeChain({ delay: 3000 })
 
 // 对象示例
 timechain.set('name', 666)
@@ -80,16 +80,16 @@ timechain.set(function (value) {
 
 * `options` *Object* 公共选项
 
-   * `timeout` *Number* 默认超时
+   * `delay` *Number* 默认超时
 
 
-#### this.set(key, value, timeout)
+#### this.set(key, value, delay)
 
 * `key` * 保存key，允许任意值
 
 * `value` * 保存value，允许任意值
 
-* `timeout` *Number* 单项超时
+* `delay` *Number* 单项超时间隔，单位ms
 
 设置存储数据的key、value
 

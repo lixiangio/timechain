@@ -10,8 +10,8 @@ test('单项时间设定', async t => {
 
    timechain.set(function(value){
       p1.resolve(value)
-   }, 999, Date.now() + 5000)
+   }, true, 5000)
 
-   t.deepEqual(999, await p1);
+   t.deepEqual(true, await p1);
 
 })
