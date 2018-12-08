@@ -108,4 +108,4 @@ timechain.set(function (value) {
 
 #### this.clear()
 
-清空整个时间队列
+清空任务队列，关闭定时器
