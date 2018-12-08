@@ -2,41 +2,41 @@
 
 class timeChain {
    /**
-    * 
-    * @param {Number} delay 默认超时
+    * @param {Number} delay 默认等待超时时间，单位ms
     */
-   constructor(options = {}) {
-
-      let { delay = 0 } = options
+   constructor({ delay = 0 }) {
 
       this.delay = delay
-      this.timeout = { _called: true }
       this.tasks = new Map()
+      this.timestamp = 0
 
    }
    /**
     * 设置key、value
-    * @param {*} key 保存key，允许任意值
-    * @param {*} value 保存value，允许任意值
+    * @param {*} key 支持任意数据类型
+    * @param {*} value 支持任意数据类型
     * @param {Number} delay 等待延时，可选
     */
-   set(key, value, delay) {
+   set(key, value, delay = this.delay) {
 
-      if (!delay) {
-         delay = this.delay
+      let timestamp = Date.now() + delay
+
+      // 当设定时间小于任务运行时间时，重置定时器
+      if (timestamp < this.timestamp) {
+         clearTimeout(this.timeout)
+         this.timestamp = timestamp
+         this.setTimeout(delay)
       }
 
-      // 仅在定时器called后激活
-      if (this.timeout._called === true) {
-         this.run(delay)
+      // 仅在定时队列为空时激活
+      else if (this.tasks.size === 0) {
+         this.setTimeout(delay)
       }
 
-      // 仅在定时队列为空时激活，非node.js环境使用
-      // if (this.tasks.size === 0) {
-      //    this.run(delay)
-      // }
-
-      return this.tasks.set(key, { value, timestamp: Date.now() + delay })
+      return this.tasks.set(key, {
+         value,
+         timestamp
+      })
 
    }
    /**
@@ -66,28 +66,43 @@ class timeChain {
     * 递归循环触发时间队列，直至队列为空
     * @param {Number} delay 等待时间，单位ms
     */
-   run(delay) {
+   setTimeout(delay) {
 
       this.timeout = setTimeout(() => {
 
-         let now = Date.now()
+         let nowTime = Date.now()
          let keys = this.tasks.keys()
 
          for (let key of keys) {
+
             let { value, timestamp } = this.tasks.get(key)
-            let delay = timestamp - now
+
+            let delay = timestamp - nowTime
+
             if (delay > 0) {
-               this.run(delay)
-               return
+
+               return this.setTimeout(delay)
+
             } else {
+
+               // 执行回调函数
                if (key instanceof Function) {
-                  key(value)
+
+                  try {
+                     key(value)
+                  } catch (error) {
+                     throw error
+                  }
+
                }
+
                this.tasks.delete(key)
+
             }
+
          }
 
-      }, delay);
+      }, delay)
 
    }
 }

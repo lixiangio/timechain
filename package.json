@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jtf": "^1.5.0",
     "zpromise": "^1.2.0"
   },
   "dependencies": {},
