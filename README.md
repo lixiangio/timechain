@@ -85,9 +85,9 @@ timechain.set(function (value) {
 
 #### this.set(key, value, delay)
 
-* `key` * 保存key，允许任意值
+* `key` * 保存key，支持任意数据类型
 
-* `value` * 保存value，允许任意值
+* `value` * 保存value，支持任意数据类型
 
 * `delay` *Number* 超时间隔，单位ms
 
