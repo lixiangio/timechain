@@ -24,10 +24,4 @@ test('超时删除', async t => {
 
    t.deepEqual(undefined, timechain.get(666));
 
-   // setTimeout(() => {
-
-   //    console.log(2995, timechain.get(111))
-
-   // }, 2995);
-
 })

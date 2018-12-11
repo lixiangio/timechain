@@ -9,7 +9,7 @@ class timeChain {
 
       this.delay = delay
       this.tasks = []
-      this.timestamp = Number.MAX_VALUE
+      this.runtimestamp = Number.MAX_VALUE
 
    }
    /**
@@ -22,29 +22,49 @@ class timeChain {
 
       let { tasks } = this
 
+      let { length } = tasks
+
       let timestamp = Date.now() + delay
 
-      // 当设定时间小于任务运行时间时，重置定时器
-      if (timestamp < this.timestamp) {
+      if (length) {
 
-         tasks.unshift([key, value, timestamp])
+         // 设定时间大于任务运行时间
+         if (timestamp > this.runtimestamp) {
 
-         this.timestamp = timestamp
+            // 反向遍历，按时间由大到小顺序插入数组（可以用二分法提升性能）
+            for (let index = length - 1; index >= 0; index--) {
+               let item = tasks[index]
+               if (timestamp > item[2]) {
+                  tasks.splice(index + 1, 0, [key, value, timestamp])
+                  return
+               }
+            }
+   
+         }
+   
+         // 设定时间小于任务运行时间
+         else if (timestamp < this.runtimestamp) {
+   
+            tasks.unshift([key, value, timestamp])
+   
+            // 重置运行时间
+            this.runtimestamp = timestamp
+   
+            this.setTimeout()
+   
+         }
+   
+         else {
+   
+            tasks.splice(1, 0, [key, value, timestamp])
+   
+         }
+
+      } else {
+
+         tasks.push([key, value, timestamp])
 
          this.setTimeout()
-
-      }
-
-      // 按时间顺序插入数组
-      else if (timestamp > this.timestamp) {
-
-         for (let index in tasks) {
-            let item = tasks[index]
-            if (timestamp < item[2]) {
-               tasks.splice(index, 0, [key, value, timestamp])
-               break
-            }
-         }
 
       }
 
@@ -71,10 +91,13 @@ class timeChain {
       let { tasks } = this
 
       for (let index in tasks) {
+
          let item = tasks[index]
          if (item[0] === key) {
-            return tasks.splice(index, 1)
+            let [task] = tasks.splice(index, 1)
+            return task[1]
          }
+
       }
 
    }
@@ -94,15 +117,9 @@ class timeChain {
 
       let [task] = this.tasks
 
-      if (!task) {
+      if (!task) return
 
-         this.timestamp = Number.MAX_VALUE
-         
-         return
-
-      }
-
-      let timestamp = task[2]
+      let [key, value, timestamp] = task
 
       let delay = timestamp - Date.now()
 
@@ -112,30 +129,41 @@ class timeChain {
 
          this.timeout = setTimeout(() => {
 
-            this.setTimeout()
+            // 异步删除时只能用循环匹配
+            this.delete(key)
+
+            this.task(key, value)
 
          }, delay)
 
       } else {
 
-         let [key, value] = task
-
-         // 执行回调函数
-         if (key instanceof Function) {
-
-            try {
-               key(value)
-            } catch (error) {
-               throw error
-            }
-
-         }
-
          this.tasks.splice(0, 1)
 
-         this.setTimeout()
+         this.task(key, value)
 
       }
+
+   }
+   /**
+    * 执行任务
+    * @param {*} key 
+    * @param {*} value 
+    */
+   task(key, value) {
+
+      // 执行回调函数
+      if (key instanceof Function) {
+
+         try {
+            key(value)
+         } catch (error) {
+            throw error
+         }
+
+      }
+
+      this.setTimeout()
 
    }
 }

@@ -15,7 +15,7 @@ test('回调函数', async t => {
    timechain.set(function (value) {
       p1.resolve(value)
    }, 1)
-
+   
    t.deepEqual(1, await p1)
 
    timechain.set(function (value) {
