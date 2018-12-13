@@ -62,6 +62,8 @@ class timeChain {
 
       } else {
 
+         this.runtimestamp = timestamp
+         
          tasks.push([key, value, timestamp])
 
          this.setTimeout()

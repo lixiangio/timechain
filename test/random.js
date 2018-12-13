@@ -5,9 +5,9 @@ test('随机值序列', async t => {
 
    let timechain = new timeChain({ delay: 3000 })
 
-   for (let i = 0; i < 100; i++) {
+   for (let i = 10; i < 100; i++) {
       let rundom = Math.floor(Math.random() * 10000)
-      timechain.set(i, { v: i }, rundom)
+      timechain.set(i, { v: 8 }, rundom)
    }
 
    let last = 0
