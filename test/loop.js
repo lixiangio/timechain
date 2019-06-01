@@ -18,7 +18,7 @@ test('同步循环', async t => {
 
    await sleep(3010)
 
-   t.ok(!timechain.get(200))
+   t.deepEqual(undefined, timechain.get(200))
 
    t.deepEqual(0, timechain.tasks.length)
 
@@ -30,12 +30,16 @@ test('延时循环', async t => {
    let timechain = new timeChain({ delay: 3000 })
 
    for (let i = 0; i < 500; i++) {
-      await sleep(10)
+      await sleep(3)
       timechain.set(i, { v: i })
    }
-
+   
    await sleep(1000)
 
    t.ok(timechain.get(450))
+
+   await sleep(2500)
+
+   t.ok(!timechain.get(450))
 
 })

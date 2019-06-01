@@ -7,9 +7,9 @@ class timeChain {
     */
    constructor({ delay = 0 }) {
 
-      this.delay = delay
-      this.tasks = []
-      this.runtimestamp = Number.MAX_VALUE
+      this.delay = delay;
+      this.tasks = [];
+      this.runtimestamp = Number.MAX_VALUE;
 
    }
    /**
@@ -20,11 +20,11 @@ class timeChain {
     */
    set(key, value, delay = this.delay) {
 
-      let { tasks } = this
+      const { tasks } = this;
 
-      let { length } = tasks
+      const { length } = tasks;
 
-      let timestamp = Date.now() + delay
+      const timestamp = Date.now() + delay;
 
       if (length) {
 
@@ -33,11 +33,13 @@ class timeChain {
 
             // 反向遍历，按时间由大到小顺序插入数组（可以用二分法提升性能）
             for (let index = length - 1; index >= 0; index--) {
-               let item = tasks[index]
+
+               const item = tasks[index];
                if (timestamp > item[2]) {
-                  tasks.splice(index + 1, 0, [key, value, timestamp])
+                  tasks.splice(index + 1, 0, [key, value, timestamp]);
                   return
                }
+
             }
    
          }
@@ -45,28 +47,28 @@ class timeChain {
          // 设定时间小于任务运行时间
          else if (timestamp < this.runtimestamp) {
    
-            tasks.unshift([key, value, timestamp])
+            tasks.unshift([key, value, timestamp]);
    
             // 重置运行时间
-            this.runtimestamp = timestamp
+            this.runtimestamp = timestamp;
    
-            this.setTimeout()
+            this.setTimeout();
    
          }
    
          else {
    
-            tasks.splice(1, 0, [key, value, timestamp])
+            tasks.splice(1, 0, [key, value, timestamp]);
    
          }
 
       } else {
 
-         this.runtimestamp = timestamp
+         this.runtimestamp = timestamp;
          
-         tasks.push([key, value, timestamp])
+         tasks.push([key, value, timestamp]);
 
-         this.setTimeout()
+         this.setTimeout();
 
       }
 
@@ -77,9 +79,9 @@ class timeChain {
     */
    get(key) {
 
-      for (let [_key, value] of this.tasks) {
+      for (const [_key, value] of this.tasks) {
          if (key === _key) {
-            return value
+            return value;
          }
       }
 
@@ -90,14 +92,14 @@ class timeChain {
     */
    delete(key) {
 
-      let { tasks } = this
+      const { tasks } = this;
 
-      for (let index in tasks) {
+      for (const index in tasks) {
 
-         let item = tasks[index]
+         const item = tasks[index];
          if (item[0] === key) {
-            let [task] = tasks.splice(index, 1)
-            return task[1]
+            const [task] = tasks.splice(index, 1);
+            return task[1];
          }
 
       }
@@ -108,7 +110,7 @@ class timeChain {
     */
    clear() {
 
-      this.tasks = []
+      this.tasks = [];
 
    }
    /**
@@ -117,13 +119,13 @@ class timeChain {
     */
    setTimeout() {
 
-      let [task] = this.tasks
+      const [task] = this.tasks;
 
       if (!task) return
 
-      let [key, value, timestamp] = task
+      const [key, value, timestamp] = task;
 
-      let delay = timestamp - Date.now()
+      const delay = timestamp - Date.now()
 
       if (delay > 0) {
 
@@ -140,9 +142,9 @@ class timeChain {
 
       } else {
 
-         this.tasks.splice(0, 1)
+         this.tasks.splice(0, 1);
 
-         this.task(key, value)
+         this.task(key, value);
 
       }
 
@@ -165,9 +167,9 @@ class timeChain {
 
       }
 
-      this.setTimeout()
+      this.setTimeout();
 
    }
 }
 
-module.exports = timeChain
+module.exports = timeChain;
